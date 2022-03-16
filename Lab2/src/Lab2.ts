@@ -30,39 +30,47 @@ class Note implements INote{
     this.createDate = createDate
     this.tags = tags
   }
-  
-
 }
 
-let notes = [
+var notes = [
   new Note("TEST","TEST","test",["test2"]),
 ]
-
 app.use(express.json())
+console.log(notes[0].id);
 
-app.get('/notes/:id', function (req: Request, res: Response) {
+app.get('/notes/:id', (req: Request, res: Response)=> {
 
   let id = parseInt(req.params.id)
- 
-
   res.send(notes.find(note=> note.id === id))
 
 })
 
 app.post('/notes', function (req: Request, res: Response) {
-  
 
-  let addedObject = new Note(req.body.title,req.body.content,req.body.createDate,req.body.tags)
+  let addedObject = new Note(req.body.title,req.body.content,req.body.createDate,req.body.tags) 
   notes.push(addedObject)  
-  res.sendStatus(200).send(`Your object was created at ${addedObject.id}`)
+  res.send(`Your object was created at ${addedObject.id}`)
 })
 app.put('/notes/:id',(req:Request,res:Response)=>{
-    
+
+  notes.map((note)=>{
+    if(note.id == parseInt(req.params.id)){
+      note.tags = req.body.tags
+      note.title = req.body.title
+      note.createDate = req.body.title
+      note.content = req.body.content
+      res.send(`Object id:${note.id} has been altered`)
+    }    
 })
-app.put('/notes/:id',(req:Request,res:Response)=>{
-  for(let i in notes){
-    
-  }
+})
+app.delete('/notes/:id',(req:Request,res:Response)=>{ 
+
+  notes.map((note)=>{
+      if(note.id == parseInt(req.params.id)){
+        res.send(this);
+        notes.splice(notes.indexOf(note),notes.indexOf(note)+1)    
+      }
+  })
 })
 
 app.listen(3000)
