@@ -8,9 +8,7 @@ export class NoteKeeper{
     tagsArr:Tag[] = []
   
     constructor(){    
-      this.readStorage();
-    
-      
+      this.readStorage();      
     }
       
     private async readStorage(): Promise<void> {
@@ -84,11 +82,13 @@ export class NoteKeeper{
       if(obj instanceof Note){
         const ChangeIndex = this.notesArr.findIndex((Note) => Note.id == id);
         this.notesArr[ChangeIndex] = obj;
+        this.updateStorage();
         return `Your object has been changed to ${JSON.stringify(obj)}`
       }
       else if(obj instanceof Tag){
         const ChangeIndex = this.tagsArr.findIndex((Tag) => Tag.id == id);
         this.tagsArr[ChangeIndex] = obj;
+        this.updateStorage();
         return `Your object has been changed to ${JSON.stringify(obj)}`
       }
       else{
