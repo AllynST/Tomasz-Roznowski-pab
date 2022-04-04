@@ -5,6 +5,8 @@ import { Request, Response } from "express";
 import fs from "fs";
 import {NoteKeeper} from "./NoteKeeper";
 import {Note} from "./Note";
+import jwt from "jsonwebtoken"
+import {User} from './User'
 
 import {Tag} from "./Tag"
 
@@ -12,18 +14,56 @@ const app = express();
 
 const date = new Date();
 
-
+const users:User[] = [
+  
+]
 
 export const noteKeeper = new NoteKeeper();
 
 
-
-
-
 app.use(express.json());
+
+
+//LOGOWANIE
+app.post("/Login",(req: Request, res: Response)=>{  
+ 
+  const user = {
+      username:req.body.username,
+      password:req.body.password
+  }
+  console.log("-----------------------------------------------------")  
+  const token = jwt.sign(user,"oijowijgoirj");
+  users.push(
+    new User(user.username,user.password,token)
+  );
+
+  console.log(users);
+  if(token === undefined){    
+    res.sendStatus(401);
+  }
+  else{
+    res.sendStatus(200);
+  }
+
+})
+
 
 //Note API
 app.get("/note/:id", (req: Request, res: Response) => {
+
+  const authData = req.headers.Authorization
+  
+  if(authData === undefined){
+    res.sendStatus(401);
+  }
+  else{
+    console.log(authData);
+    //const token = authData.split(' ')[1]
+  }
+  
+
+  
+
   res.send(noteKeeper.GET("note",+req.params.id));
 });
 app.post("/note",(req: Request, res: Response)=>{ 

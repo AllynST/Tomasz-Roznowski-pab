@@ -4,7 +4,7 @@ import {Note} from "./Note"
 
 export class NoteKeeper{
 
-    notesArr:Note[] = []    
+    notesArr:Note[] = []
     tagsArr:Tag[] = []
   
     constructor(){    
