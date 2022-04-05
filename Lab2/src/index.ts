@@ -4,6 +4,7 @@ import express from "express";
 import { Request, Response } from "express";
 import fs from "fs";
 import {NoteKeeper} from "./NoteKeeper";
+import noteKeeper from "./NoteKeeper"
 import {Note} from "./Note";
 import jwt from "jsonwebtoken"
 import {User} from './User'
@@ -14,14 +15,16 @@ const app = express();
 
 const date = new Date();
 
-const users:User[] = [
-  
-]
-
-export const noteKeeper = new NoteKeeper();
-
+const users:User[] = []
 
 app.use(express.json());
+
+noteKeeper.Users = [
+  new User("1","Allyn","zaq1@WSX"),
+  new User("2","Allyn2","zaq1@WSX"),
+  new User("3","Ally3","zaq1@WSX"),
+  new User("4","Allyn4","zaq1@WSX"),
+]
 
 
 //LOGOWANIE
@@ -31,20 +34,17 @@ app.post("/Login",(req: Request, res: Response)=>{
       username:req.body.username,
       password:req.body.password
   }
-  console.log("-----------------------------------------------------")  
-  const token = jwt.sign(user,"oijowijgoirj");
-  users.push(
-    new User(user.username,user.password,token)
-  );
 
-  console.log(users);
-  if(token === undefined){    
-    res.sendStatus(401);
-  }
-  else{
+  const attemptedLogin = noteKeeper.Users.findIndex(User => User.userName === user.username)
+
+  if(noteKeeper.Users[attemptedLogin].password === user.password){
+    noteKeeper.Users[attemptedLogin].setToken(jwt.sign(user,"oijowijgoirj"));
     res.sendStatus(200);
   }
-
+  else{
+    res.sendStatus(401);
+  }
+  
 })
 
 
