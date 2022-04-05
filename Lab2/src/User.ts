@@ -19,11 +19,11 @@ export class User{
         
     }
 
-    setToken(entrToken){
+    setToken(entrToken:string){
         this.token = entrToken
     }
 
-    tokenValid(entrToken){
+    tokenValid(entrToken:string){
         return entrToken != this.token ?  false : true
     }
 

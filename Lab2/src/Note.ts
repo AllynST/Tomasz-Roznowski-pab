@@ -1,6 +1,6 @@
 import {NoteKeeper} from "./NoteKeeper"
 import {Tag} from "./Tag"
-import {noteKeeper} from "./index"
+import noteKeeper from "./NoteKeeper"
 
 export class Note {
     id: number;

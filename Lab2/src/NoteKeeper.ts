@@ -36,7 +36,7 @@ export class NoteKeeper{
       return this.tagsArr
     }
 
-    GET(obj:string,id:number,token:string){
+    GET(obj:string,id:number,token){
       if(obj === "note"){        
         const obj = this.notesArr.find((note) => note.id === id)
         return obj    
@@ -47,7 +47,7 @@ export class NoteKeeper{
       }
     }
   
-    POST(obj:any){
+    POST(obj:any,token){
       if(obj instanceof Note){
         this.notesArr.push(obj)
         this.updateStorage();
@@ -63,7 +63,7 @@ export class NoteKeeper{
       }
     }
   
-    DELETE(obj:string,id:number){
+    DELETE(obj:string,id:number,token){
       if(obj === "note"){
         
         this.notesArr.splice(this.notesArr.findIndex(obj => obj.id === id),1)
@@ -81,7 +81,7 @@ export class NoteKeeper{
 
       
     }
-    PUT(obj :any, id:number){
+    PUT(obj :any, id:number,token){
       
       if(obj instanceof Note){
         const ChangeIndex = this.notesArr.findIndex((Note) => Note.id == id);

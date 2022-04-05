@@ -20,25 +20,26 @@ const users:User[] = []
 app.use(express.json());
 
 noteKeeper.Users = [
-  new User("1","Allyn","zaq1@WSX"),
-  new User("2","Allyn2","zaq1@WSX"),
-  new User("3","Ally3","zaq1@WSX"),
-  new User("4","Allyn4","zaq1@WSX"),
+  new User("Allyn","zaq1@WSX"),
+  new User("Allyn2","zaq1@WSX"),
+  new User("Ally3","zaq1@WSX"),
+  new User("Allyn4","zaq1@WSX"),
 ]
 
-
 //LOGOWANIE
-app.post("/Login",(req: Request, res: Response)=>{  
- 
-  const user = {
-      username:req.body.username,
-      password:req.body.password
-  }
+app.post("/Login",(req: Request, res: Response)=>{
 
-  const attemptedLogin = noteKeeper.Users.findIndex(User => User.userName === user.username)
 
-  if(noteKeeper.Users[attemptedLogin].password === user.password){
-    noteKeeper.Users[attemptedLogin].setToken(jwt.sign(user,"oijowijgoirj"));
+  console.log(`login ${req.body.userName}`)
+  console.log(`login ${req.body.password}`)
+
+  const attemptedLoginInd = noteKeeper.Users.findIndex((x) => x.userName == req.body.userName)
+  console.log(attemptedLoginInd)
+  
+  if(noteKeeper.Users[attemptedLoginInd].password === req.body.password){
+    
+    noteKeeper.Users[attemptedLoginInd].setToken(jwt.sign({userName:req.body.userName,password:req.body.password},"oijowijgoirj"));
+    console.log(noteKeeper.Users[attemptedLoginInd])
     res.sendStatus(200);
   }
   else{
@@ -52,28 +53,21 @@ app.post("/Login",(req: Request, res: Response)=>{
 app.get("/note/:id", (req: Request, res: Response) => {
 
   const authData = req.headers.Authorization
+  console.log(authData);
   
-  if(authData === undefined){
-    res.sendStatus(401);
-  }
-  else{
-    console.log(authData);
-    //const token = authData.split(' ')[1]
-  }
-  
-
-  
-
-  res.send(noteKeeper.GET("note",+req.params.id));
+  res.send(noteKeeper.GET("note",+req.params.id,authData));
 });
-app.post("/note",(req: Request, res: Response)=>{ 
-  res.send(noteKeeper.POST(req.body));
+app.post("/note",(req: Request, res: Response)=>{
+  const authData = req.headers.Authorization 
+  res.send(noteKeeper.POST(req.body,authData));
 });
 app.put("/note/:id", (req: Request, res: Response) => {
-  res.send(noteKeeper.PUT(req.body,+req.params.id));
+  const authData = req.headers.Authorization
+  res.send(noteKeeper.PUT(req.body,+req.params.id,authData));
 });
 app.delete("/note/:id", (req: Request, res: Response) => {
-  res.send(`Your object was deleted at ${noteKeeper.DELETE("note",+req.params.id)}`);  
+  const authData = req.headers.Authorization
+  res.send(`Your object was deleted at ${noteKeeper.DELETE("note",+req.params.id,authData)}`);  
 });
 //
 //Notes API
@@ -82,26 +76,31 @@ app.get("/notes", (req: Request, res: Response) => {
 });
 //
 //TAG API
-app.get("/tag/:id", (req: Request, res: Response) => {  
-  res.send(noteKeeper.GET("tag",+req.params.id));
+app.get("/tag/:id", (req: Request, res: Response) => {
+  const authData = req.headers.Authorization  
+  res.send(noteKeeper.GET("tag",+req.params.id,authData));
 });
 
 app.post("/tag", function (req: Request, res: Response) {
+  const authData = req.headers.Authorization
   let addedObject = new Tag(req.body.name);
   noteKeeper.POST(addedObject);
-  res.send(`Your tag was created at ${addedObject.id}`);
+  res.send(`Your tag was created at ${addedObject.id,authData}`);
 });
-app.put("/tag/:id", (req: Request, res: Response) => { 
-  res.send(noteKeeper.PUT(req.body,+req.params.id));
+app.put("/tag/:id", (req: Request, res: Response) => {
+  const authData = req.headers.Authorization 
+  res.send(noteKeeper.PUT(req.body,+req.params.id,authData));
 });
 
-app.delete("/tag/:id", (req: Request, res: Response) => {    
-  res.send(`Your object was deleted at ${noteKeeper.DELETE("tag",+req.params.id)}`);
+app.delete("/tag/:id", (req: Request, res: Response) => {
+  const authData = req.headers.Authorization    
+  res.send(`Your object was deleted at ${noteKeeper.DELETE("tag",+req.params.id,authData)}`);
   
 });
 //Tags API
 app.get("/tags", (req: Request, res: Response) => {
+  
   res.send(noteKeeper.getTagsList());
 });
-
-app.listen(3000);
+console.log("App started")
+app.listen(3001);
