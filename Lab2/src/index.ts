@@ -9,15 +9,26 @@ import {Note} from "./Note";
 import jwt from "jsonwebtoken"
 import {User} from './User'
 
+import NoteAPI from './APIs/noteAPI'
+
+
+
+
+
 import {Tag} from "./Tag"
 
-const app = express();
+
+const Express = require('express')
+const app = express()
+
+
 
 const date = new Date();
 
 const users:User[] = []
 
 app.use(express.json());
+
 
 noteKeeper.Users = [
   new User("Allyn","zaq1@WSX"),
@@ -26,13 +37,15 @@ noteKeeper.Users = [
   new User("Allyn4","zaq1@WSX"),
 ]
 
+
+
 //LOGOWANIE
 app.post("/Login",(req: Request, res: Response)=>{
 
-
+  
   console.log(`login ${req.body.userName}`)
-  console.log(`login ${req.body.password}`)
-
+  console.log(`password ${req.body.password}`)
+  
   const attemptedLoginInd = noteKeeper.Users.findIndex((x) => x.userName == req.body.userName)
   console.log(attemptedLoginInd)
   
@@ -49,26 +62,9 @@ app.post("/Login",(req: Request, res: Response)=>{
 })
 
 
-//Note API
-app.get("/note/:id", (req: Request, res: Response) => {
 
-  const authData = req.headers.Authorization
-  console.log(authData);
-  
-  res.send(noteKeeper.GET("note",+req.params.id,authData));
-});
-app.post("/note",(req: Request, res: Response)=>{
-  const authData = req.headers.Authorization 
-  res.send(noteKeeper.POST(req.body,authData));
-});
-app.put("/note/:id", (req: Request, res: Response) => {
-  const authData = req.headers.Authorization
-  res.send(noteKeeper.PUT(req.body,+req.params.id,authData));
-});
-app.delete("/note/:id", (req: Request, res: Response) => {
-  const authData = req.headers.Authorization
-  res.send(`Your object was deleted at ${noteKeeper.DELETE("note",+req.params.id,authData)}`);  
-});
+//Note API
+
 //
 //Notes API
 app.get("/notes", (req: Request, res: Response) => {
@@ -78,23 +74,23 @@ app.get("/notes", (req: Request, res: Response) => {
 //TAG API
 app.get("/tag/:id", (req: Request, res: Response) => {
   const authData = req.headers.Authorization  
-  res.send(noteKeeper.GET("tag",+req.params.id,authData));
+  res.send(noteKeeper.GET("tag",+req.params.id));
 });
 
 app.post("/tag", function (req: Request, res: Response) {
   const authData = req.headers.Authorization
   let addedObject = new Tag(req.body.name);
   noteKeeper.POST(addedObject);
-  res.send(`Your tag was created at ${addedObject.id,authData}`);
+  res.send(`Your tag was created at ${addedObject.id}`);
 });
 app.put("/tag/:id", (req: Request, res: Response) => {
   const authData = req.headers.Authorization 
-  res.send(noteKeeper.PUT(req.body,+req.params.id,authData));
+  res.send(noteKeeper.PUT(req.body,+req.params.id));
 });
 
 app.delete("/tag/:id", (req: Request, res: Response) => {
   const authData = req.headers.Authorization    
-  res.send(`Your object was deleted at ${noteKeeper.DELETE("tag",+req.params.id,authData)}`);
+  res.send(`Your object was deleted at ${noteKeeper.DELETE("tag",+req.params.id)}`);
   
 });
 //Tags API
@@ -103,4 +99,7 @@ app.get("/tags", (req: Request, res: Response) => {
   res.send(noteKeeper.getTagsList());
 });
 console.log("App started")
-app.listen(3001);
+
+
+app.use('/note', NoteAPI)
+app.listen(3000);
