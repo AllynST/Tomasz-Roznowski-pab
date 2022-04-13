@@ -3,33 +3,57 @@ import fs from "fs"
 import {Note} from "./Note"
 import {User} from "./User"
 
+
+
+interface dataMethod{
+  updateStorage(notes:Array<Note>,tags:Array<Tag>) 
+  readStorage():[Array<Note>,Array<Tag>]
+}
+
+
+class fileSystem implements dataMethod {
+  updateStorage() {
+    throw new Error("Method not implemented.")
+  }
+  readStorage() {
+    throw new Error("Method not implemented.")
+  }
+
+}
+class database implements dataMethod{
+  updateStorage() {
+    throw new Error("Method not implemented.")
+  }
+  readStorage() {
+    throw new Error("Method not implemented.")
+  }
+
+}
+
 export class NoteKeeper{
 
-
+    dataMethod: dataMethod
     Users:User[] = []
     notesArr:Note[] = []
     tagsArr:Tag[] = []
   
-    constructor(){    
-      this.readStorage();      
+    constructor(dataMethod){
+      if(dataMethod instanceof fileSystem){
+        this.dataMethod = new fileSystem()
+      }
+      else{
+        this.dataMethod = new database()
+      }
+          
+      this.dataMethod.readStorage();      
     }
       
     private async readStorage(): Promise<void> {
-      try {
-          this.notesArr = JSON.parse(await fs.promises.readFile("src/data/notes.json", 'utf-8'));
-          this.tagsArr = JSON.parse(await fs.promises.readFile("src/data/tags.json", 'utf-8'));
-      } catch (err) {
-          console.log(err)
-      }
+      this.dataMethod.readStorage();
     }
   
     private async updateStorage(): Promise<void> {
-      try {
-          await fs.promises.writeFile("src/data/notes.json", JSON.stringify(this.notesArr));
-          await fs.promises.writeFile("src/data/tags.json", JSON.stringify(this.tagsArr));
-      } catch (err) {
-          console.log(err)
-      }
+     this.dataMethod.updateStorage();
     }  
   
     getTagsList(){
@@ -103,7 +127,6 @@ export class NoteKeeper{
   
   }
 
- 
-  export default new NoteKeeper();
+
 
   

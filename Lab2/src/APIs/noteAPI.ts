@@ -10,11 +10,23 @@ const express = require('express')
 const router = express.Router()
 
 // middleware that is specific to this router
-router.use((req: Request, res: Response) => {
+router.use((req: Request, res: Response,next:any) => {
   
+  const token = req.headers.authorization
+  
+  if (token === undefined){
+      res.sendStatus(401)
+  }
+  else{
+    if(accessCheck(token)){
+      next()
+    }
+    else{
+      res.sendStatus(401) 
+    }
+        
+  }
 
-  // console.log(accessCheck(req.headers.Authorization[1]))
-  accessCheck(req.headers.Authorization[1]) ? null : res.status(401) 
 })
 
 router.get("/:id", (req: Request, res: Response) => {

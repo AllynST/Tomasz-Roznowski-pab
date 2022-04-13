@@ -1,33 +1,27 @@
-import { notStrictEqual } from "assert";
-import { create } from "domain";
 import express from "express";
 import { Request, Response } from "express";
 import fs from "fs";
 import {NoteKeeper} from "./NoteKeeper";
-import noteKeeper from "./NoteKeeper"
-import {Note} from "./Note";
+
+
 import jwt from "jsonwebtoken"
 import {User} from './User'
 
 import NoteAPI from './APIs/noteAPI'
 
-
-
-
-
 import {Tag} from "./Tag"
 
 
-const Express = require('express')
+
 const app = express()
-
-
-
-const date = new Date();
 
 const users:User[] = []
 
 app.use(express.json());
+
+const dataMethod = await fs.promises.readFile("")
+
+const noteKeeper = new NoteKeeper()
 
 
 noteKeeper.Users = [
@@ -42,17 +36,13 @@ noteKeeper.Users = [
 //LOGOWANIE
 app.post("/Login",(req: Request, res: Response)=>{
 
-  
-  console.log(`login ${req.body.userName}`)
-  console.log(`password ${req.body.password}`)
-  
   const attemptedLoginInd = noteKeeper.Users.findIndex((x) => x.userName == req.body.userName)
-  console.log(attemptedLoginInd)
+
   
   if(noteKeeper.Users[attemptedLoginInd].password === req.body.password){
     
     noteKeeper.Users[attemptedLoginInd].setToken(jwt.sign({userName:req.body.userName,password:req.body.password},"oijowijgoirj"));
-    console.log(noteKeeper.Users[attemptedLoginInd])
+    console.log(noteKeeper.Users[attemptedLoginInd].token)
     res.sendStatus(200);
   }
   else{
@@ -67,19 +57,19 @@ app.post("/Login",(req: Request, res: Response)=>{
 
 //
 //Notes API
-app.get("/notes", (req: Request, res: Response) => {
-  res.send(noteKeeper.notesArr);
+app.get("/notes/user/:userName", (req: Request, res: Response) => {
+  const reqUser = req.params.userName;  
+  const response = noteKeeper.notesArr.filter(note =>note.author == reqUser && note.visible)
+
 });
 //
 //TAG API
 app.get("/tag/:id", (req: Request, res: Response) => {
-  const authData = req.headers.Authorization  
-  res.send(noteKeeper.GET("tag",+req.params.id));
+    res.send(noteKeeper.GET("tag",+req.params.id));
 });
 
 app.post("/tag", function (req: Request, res: Response) {
-  const authData = req.headers.Authorization
-  let addedObject = new Tag(req.body.name);
+    let addedObject = new Tag(req.body.name);
   noteKeeper.POST(addedObject);
   res.send(`Your tag was created at ${addedObject.id}`);
 });

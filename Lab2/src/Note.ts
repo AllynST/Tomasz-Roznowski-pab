@@ -1,4 +1,4 @@
-import {NoteKeeper} from "./NoteKeeper"
+
 import {Tag} from "./Tag"
 import noteKeeper from "./NoteKeeper"
 
@@ -7,12 +7,16 @@ export class Note {
     title: string;
     content: string;
     createDate: string;
+    visible :boolean;
+    author:string
     tags: Tag[];
   
     constructor(
       title: string,
       content: string,
       createDate: string,
+      visible:boolean,
+      author:string,
       tags: Tag[],
       id?: number
     ) {
@@ -33,6 +37,8 @@ export class Note {
       this.content = content;
       this.createDate = createDate;
       this.tags = tags;
+      this.author = author;
+      this.visible = visible;
     }
   }
   

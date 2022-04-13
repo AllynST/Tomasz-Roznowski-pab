@@ -4,7 +4,6 @@ import { Note } from "./Note"
 export class User{
 
     id?:number;
-    notes?:Note[] = [];
     userName:string;
     password:string;
     token?:string;
