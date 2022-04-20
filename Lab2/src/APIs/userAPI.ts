@@ -1,23 +1,16 @@
 import { Request, Response } from "express";
 import fs from "fs";
-
-import jwt from "jsonwebtoken"
-
 import {Note} from "../Note";
-import {Tag} from '../Tag'
+import jwt from "jsonwebtoken"
 import {User} from '../User'
+
+import {Tag} from '../Tag'
+import {notes,users,tags} from '../dataMethods'
 
 const express = require('express')
 const router = express.Router()
 
-export let notes:Note[] = []
-export let tags:Tag[] = []
-export let users:User[] = [
-  new User("Allyn","zaq1@WSX"),
-  new User("Allyn2","zaq1@WSX"),
-  new User("Ally3","zaq1@WSX"),
-  new User("Allyn4","zaq1@WSX"),
-]
+
 
 
 
@@ -44,28 +37,26 @@ router.use((req: Request, res: Response,next:any) => {
 })
 
 router.get("/:id", (req: Request, res: Response) => {
-  const obj = notes.find((note) => note.id === +req.params.id)  
+  const obj = tags.find((tag) => tag.id === +req.params.id)  
   res.send(obj);
 });
-router.post("/",(req: Request, res: Response)=>{
-  const obj:Note = req.body
-  notes.push(obj)
-  //updateStorage();
-  res.send();
-});
-router.put("/:id", (req: Request, res: Response) => {
-  const obj = req.body;
-  const ChangeIndex = notes.findIndex((Note) => Note.id == +req.params.id);
-  //updateStorage();
-  res.send();
-});
-router.delete("/:id", (req: Request, res: Response) => {
 
-  notes.splice(notes.findIndex(obj => obj.id === +req.params.id),1)
-  //updateStorage();
-       
-  res.send(`Your object was deleted at ${req.params.id}`);  
-});
+router.post("/Login",(req: Request, res: Response)=>{
+
+    const attemptedLoginInd = users.findIndex((x) => x.userName == req.body.userName)
+  
+    
+    if(users[attemptedLoginInd].password === req.body.password){
+      
+      users[attemptedLoginInd].setToken(jwt.sign({userName:req.body.userName,password:req.body.password},"oijowijgoirj"));
+      console.log(users[attemptedLoginInd].token)
+      res.sendStatus(200);
+    }
+    else{
+      res.sendStatus(401);
+    }
+    
+  })
 
 
 const accessCheck = (token?:any) :boolean => {
