@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import fs from "fs";
+import {dataMethod} from '../dataMethods'
+
+
 
 import jwt from "jsonwebtoken"
+
+//import z require zrobiony w celu nadania typu
+const dataMethodValue:dataMethod = require('../dataMethods')
 
 import {Note} from "../Note";
 import {Tag} from '../Tag'
@@ -44,25 +50,32 @@ router.use((req: Request, res: Response,next:any) => {
 })
 
 router.get("/:id", (req: Request, res: Response) => {
-  const obj = notes.find((note) => note.id === +req.params.id)  
+  let obj :any;
+  if(dataMethodValue.datamethod === "filesystem"){
+     obj = notes.find(d => d.id === +req.params.id)
+  }
+  else{
+      //const obj = await Adventure.findById(id).exec();
+      obj = null;
+  }
   res.send(obj);
 });
 router.post("/",(req: Request, res: Response)=>{
   const obj:Note = req.body
   notes.push(obj)
-  //updateStorage();
-  res.send();
+  dataMethodValue.updateStorage();
+  res.send("object added");
 });
 router.put("/:id", (req: Request, res: Response) => {
   const obj = req.body;
   const ChangeIndex = notes.findIndex((Note) => Note.id == +req.params.id);
-  //updateStorage();
+  dataMethodValue.updateStorage();
   res.send();
 });
 router.delete("/:id", (req: Request, res: Response) => {
 
   notes.splice(notes.findIndex(obj => obj.id === +req.params.id),1)
-  //updateStorage();
+  dataMethodValue.updateStorage();
        
   res.send(`Your object was deleted at ${req.params.id}`);  
 });

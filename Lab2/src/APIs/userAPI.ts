@@ -58,6 +58,10 @@ router.post("/Login",(req: Request, res: Response)=>{
     
   })
 
+router.post('/Register',(req: Request, res: Response) =>{
+  
+});
+
 
 const accessCheck = (token?:any) :boolean => {
     if(token == "undefined"){

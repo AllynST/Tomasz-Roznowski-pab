@@ -16,6 +16,8 @@ const router = express.Router()
 
 
 
+
+
 // middleware that is specific to this router
 router.use((req: Request, res: Response,next:any) => {
   
@@ -76,5 +78,6 @@ const accessCheck = (token?:any) :boolean => {
     return true
 }
 
+console.log(notes);
 
 export default module.exports = router

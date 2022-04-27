@@ -1,6 +1,5 @@
 
 import {Tag} from "./Tag"
-import noteKeeper from "./NoteKeeper"
 
 export class Note {
     id: number;
@@ -27,11 +26,11 @@ export class Note {
         this.id = id;
       }
       
-      tags.forEach(tag =>{
-        if(!noteKeeper.tagsArr.includes(tag)){
-          noteKeeper.POST(tag)
-        }
-      })
+      // tags.forEach(tag =>{
+      //   if(!noteKeeper.tagsArr.includes(tag)){
+      //     noteKeeper.POST(tag)
+      //   }
+      // })
   
       this.title = title;
       this.content = content;
