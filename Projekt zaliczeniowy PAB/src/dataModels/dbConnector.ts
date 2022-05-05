@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import {Response} from 'express'
-import { Recipe, User } from "./classes";
+import { Recipe} from "./classes";
 import jwt from "jsonwebtoken";
-import {IReview} from '../helpers/dataFormats'
 import recipeCRUD from "./recipeCRUD";
 import reviewCRUD from "./reviewCRUD";
 import { recipeModel } from "./schemas";
@@ -24,6 +23,9 @@ class dbConnector {
         this.reviewCRUD = new reviewCRUD();
         this.userCRUD = new userCRUD();
         //this.categorieCRUD = new categorieCRUD();
+        //this.forumThreadCRUD = new forumThreadCRUD();
+        //this.forumPostCRUD = new forumPostCRUD();
+        //this.adminPanel = new AdminPanel();
         //this.findObjByID(2,"recipe")
     }
 

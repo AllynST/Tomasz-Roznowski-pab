@@ -12,7 +12,7 @@ const router = express.Router();
 
 //TODO: Authorization
 router.use((req: Request, res: Response, next: any) => {    
-    dbConnector.authorizeCheck(req.headers.authorization!,res,next)
+    //dbConnector.authorizeCheck(req.headers.authorization!,res,next)
 });
 
 router.get("/:id", (req: Request, res: Response) => {
