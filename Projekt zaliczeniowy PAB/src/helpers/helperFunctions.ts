@@ -7,3 +7,4 @@ export function validJSON(obj: any) {
         
     }
 }
+//TODO CREATE FUNCTION TO CHECK IF OBJ WITH CERTAIN ID EXISTS (id,model) np (4,threadModel)

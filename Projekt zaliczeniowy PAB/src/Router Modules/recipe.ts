@@ -10,7 +10,6 @@ import { IUser } from "../helpers/dataFormats";
 const express = require("express");
 const router = express.Router();
 
-//TODO: Authorization
 router.use((req: Request, res: Response, next: any) => {    
     //dbConnector.authorizeCheck(req.headers.authorization!,res,next)
 });
@@ -27,5 +26,6 @@ router.put("/:id", (req: Request, res: Response) => {
 router.delete("/:id", (req: Request, res: Response) => {
     dbConnector.recipeCRUD.DELETE(+req.params.id, res);
 });
+//TODO ADD ENDPOINT TO RETURN ALL RECIPES !!!!!!!!!!!
 
 export default module.exports = router;
