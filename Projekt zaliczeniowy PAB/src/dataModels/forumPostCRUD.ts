@@ -30,9 +30,8 @@ export default class forumPostCRUD{
             else{
                 return res.status(404).send("Provided post id doesnt exist")
             }
-            
-
         }
+        
         else{
             return res.status(404).send("Provided thread id doesnt exist")
         }

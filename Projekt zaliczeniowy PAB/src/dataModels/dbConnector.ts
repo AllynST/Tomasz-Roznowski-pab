@@ -7,12 +7,16 @@ import reviewCRUD from "./reviewCRUD";
 import { recipeModel } from "./schemas";
 import userCRUD from "./userCRUD";
 import { secret } from "..";
+import forumThreadCRUD from "./forumThreadCRUD";
+import forumPostCRUD from "./forumPostCRUD";
 
 class dbConnector {
 
     recipeCRUD:recipeCRUD;
     reviewCRUD:reviewCRUD;
     userCRUD:userCRUD;
+    forumThreadCRUD:forumThreadCRUD;
+    forumPostCRUD:forumPostCRUD;
     //categorieCRUD:categorieCRUD;
 
     //TODO: connect other endpoints
@@ -23,8 +27,8 @@ class dbConnector {
         this.reviewCRUD = new reviewCRUD();
         this.userCRUD = new userCRUD();
         //this.categorieCRUD = new categorieCRUD();
-        //this.forumThreadCRUD = new forumThreadCRUD();
-        //this.forumPostCRUD = new forumPostCRUD();
+        this.forumThreadCRUD = new forumThreadCRUD();
+        this.forumPostCRUD = new forumPostCRUD();
         //this.adminPanel = new AdminPanel();
         //this.findObjByID(2,"recipe")
     }
