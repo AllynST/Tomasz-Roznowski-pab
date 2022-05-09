@@ -17,12 +17,9 @@ router.use((req: Request, res: Response, next: any) => {
 
 //publiczne dane o koncie
 router.get("/:id", (req: Request, res: Response) => {
+  //FIXME sending 2 headers
   const test = dbConnector.authorizeCheck(req.headers.authorization!,res)
-
   dbConnector.userCRUD.GET(+req.params.id,res)
-  
-  
-
   
 });
 //login
@@ -36,7 +33,6 @@ router.post("/Register", (req: Request, res: Response) => {
   dbConnector.userCRUD.POST_register(req.body,res)
 
 });
-
 router.put("/:id", (req: Request, res: Response) => {
     //const payload = jwt.verify(token, secret)
     //zmiana danych użytkownika po potwierdzeniu hasła

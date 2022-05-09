@@ -9,6 +9,7 @@ import userCRUD from "./userCRUD";
 import { secret } from "..";
 import forumThreadCRUD from "./forumThreadCRUD";
 import forumPostCRUD from "./forumPostCRUD";
+import { AdminPanel } from "./adminPanel";
 
 class dbConnector {
 
@@ -17,6 +18,7 @@ class dbConnector {
     userCRUD:userCRUD;
     forumThreadCRUD:forumThreadCRUD;
     forumPostCRUD:forumPostCRUD;
+    AdminPanel:AdminPanel;
     //categorieCRUD:categorieCRUD;
 
     //TODO: connect other endpoints
@@ -29,13 +31,15 @@ class dbConnector {
         //this.categorieCRUD = new categorieCRUD();
         this.forumThreadCRUD = new forumThreadCRUD();
         this.forumPostCRUD = new forumPostCRUD();
-        //this.adminPanel = new AdminPanel();
+        this.AdminPanel = new AdminPanel();
         //this.findObjByID(2,"recipe")
     }
 
-    async authorizeCheck(header:string,res:Response,next?:any){
+    async authorizeCheck(header:string, res:Response,next?:any){
         //401 no token
         //403 invalid token or data format
+
+        
        
         if(header == undefined) {return res.sendStatus(401)}
             if(!header.includes("Bearer ")){return res.sendStatus(401)}
@@ -44,6 +48,8 @@ class dbConnector {
             jwt.verify(token!, secret, (err, user: any) => {
                 //TODO CHANGE DO ENV
                 if (err) return res.sendStatus(403);
+
+                res.locals.user = user;
 
             //     //Wrong data format
             //    else if (!(user instanceof User)) {

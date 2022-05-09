@@ -36,6 +36,7 @@ export default class reviewCRUD {
         const delIndex = obj.reviews.findIndex(
             (review: { _id: number }) => review._id === reviewID
         );
+        //FIXME try $pullAll
         const updated = obj.reviews.splice(delIndex, 1);
         recipeModel.findByIdAndUpdate({ id: recipeID }, updated);
         res.sendStatus(400);

@@ -16,7 +16,8 @@ export const secret = "ICANNOTDOANENVFILE0239580293850293580293852039580298531"
 import recipeAPI from "./Router Modules/recipe";
 import reviewAPI from "./Router Modules/review";
 import userAPI from "./Router Modules/user";
-import forumAPI from './Router Modules/forum'
+import threadAPI from './Router Modules/forumThreads'
+import postAPI from './Router Modules/forumPosts'
 
 // if (process.env.secret == undefined) {
 //     throw new Error("No secret found");
@@ -47,7 +48,8 @@ app.use(express.json());
 app.use("/recipe", recipeAPI);
 app.use("/review", reviewAPI);
 app.use("/user", userAPI);
-app.use("/forum", forumAPI);
+app.use("/forum/thread", threadAPI);
+app.use("/forum/post", postAPI);
 //TODO: dodać endpointy z routerów
 
 app.listen(3000);

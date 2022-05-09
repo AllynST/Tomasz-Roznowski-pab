@@ -1,0 +1,23 @@
+POST http://localhost:3000/forum/posts/add/6275942e201b24ffb838b063 HTTP/1.1
+content-type: application/json
+
+{
+    "title":"Admin message 4",
+    "content":"Respect the administration",
+    "addedBy":{
+        "name":"Allan",
+        "surname":"Strawpool",
+        "admin": true
+    }
+}
+
+
+###
+//TODO CHANGE ENDPOINTS
+//FIXME idk why its not working
+//Checked with POSTMAN
+DELETE http://localhost:3000/forum/posts/delete/6275942e201b24ffb838b063/6276f08ff103ebce930b0426 HTTP/1.1
+content-type: application/json
+
+{    
+}

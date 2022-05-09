@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+//TODO ADD VALIDATION
 
 const userSchema = new mongoose.Schema({
+    userName:String,
     name: String,
     email: String,
     admin: Boolean,
@@ -9,9 +11,14 @@ const userSchema = new mongoose.Schema({
 });
 
 const postSchema = new mongoose.Schema({
-    id:Number,
-    title:String,
-    content:String,
+    title:{
+        type:String,
+        required:true
+    },
+    content:{
+        type:String,
+        required:true
+    },
     addedBy: {
         name: String,
         surname: String,
@@ -21,8 +28,15 @@ const postSchema = new mongoose.Schema({
 
 const threadSchema = new mongoose.Schema(
     {
-        topic: String,
-        description: String,
+        topic:{
+            type:String,
+            required:true
+        },
+        description:{
+            type:String,
+            required:true
+
+        },
         posts: [postSchema],
         categories: [String],
         addedBy: {
@@ -59,3 +73,5 @@ const recipeSchema = new mongoose.Schema({
 export const threadModel = mongoose.model("forumThreads", threadSchema);
 export const userModel = mongoose.model("users", userSchema);
 export const recipeModel = mongoose.model("recipes", recipeSchema);
+
+

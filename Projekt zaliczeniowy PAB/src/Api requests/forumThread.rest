@@ -1,0 +1,60 @@
+
+GET http://localhost:3000/forum/threads HTTP/1.1
+content-type: application/json
+
+{        
+}
+
+
+###
+
+GET http://localhost:3000/forum/thread/62750938acebb0b5fc1ddcf0 HTTP/1.1
+content-type: application/json
+
+{        
+}
+
+###
+
+POST http://localhost:3000/forum/thread HTTP/1.1
+content-type: application/json
+
+{
+        "topic":"Forum rules",
+        "description":"Following post contains a list of rules enforced by the administration",
+        "posts":[],
+        "categories":["Admin","Rules"],
+        "addedBy": {
+            "name":"Allyn",
+            "surname":"Strawpool",
+            "admin":true
+        },
+        "post_count": 1
+}
+
+
+###
+
+PUT http://localhost:3000/forum/thread/62750a258435e24c9e540d50 HTTP/1.1
+content-type: application/json
+
+{
+    "topic":"Forum rules 2",
+        "description":"Following post contains a list of rules enforced by the administration",
+        "posts":[],
+        "categories":["Admin","Rules"],
+        "addedBy": {
+            "name":"Allyn",
+            "surname":"Strawpool",
+            "admin":true
+        },
+        "post_count": 1        
+}
+
+###
+
+DELETE http://localhost:3000/forum/thread/62751a2caf693efba92afdde HTTP/1.1
+content-type: application/json
+
+{            
+}
