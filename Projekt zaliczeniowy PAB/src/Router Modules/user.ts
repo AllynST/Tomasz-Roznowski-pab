@@ -1,26 +1,20 @@
-
 import { Request, Response } from "express";
-import fs from "fs";
-import jwt from "jsonwebtoken";
 import dbConnector from "../dataModels/dbConnector";
-import {validJSON} from '../helpers/helperFunctions'
 
-console.log("userROUTER working")
 
 const express = require("express");
 const router = express.Router();
 
-// middleware that is specific to this router
 router.use((req: Request, res: Response, next: any) => {
     next();
 });
 
-//publiczne dane o koncie
+//prywatne  dane o koncie
 router.get("/:id", (req: Request, res: Response) => {
-  //FIXME sending 2 headers
-  const test = dbConnector.authorizeCheck(req.headers.authorization!,res)
-  dbConnector.userCRUD.GET(+req.params.id,res)
-  
+  dbConnector.authorizeCheck(req.headers.authorization!,res)
+  if(res.locals.user!=null){
+    dbConnector.userCRUD.GET(+req.params.id, res);
+  } 
 });
 //login
 router.post("/Login", (req: Request, res: Response) => {
@@ -29,9 +23,7 @@ router.post("/Login", (req: Request, res: Response) => {
 });
 //Register
 router.post("/Register", (req: Request, res: Response) => {
-  console.log(req.body)
-  dbConnector.userCRUD.POST_register(req.body,res)
-
+  dbConnector.userCRUD.POST_register(req.body,res)  
 });
 router.put("/:id", (req: Request, res: Response) => {
     //const payload = jwt.verify(token, secret)

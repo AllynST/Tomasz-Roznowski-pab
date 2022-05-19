@@ -1,0 +1,57 @@
+
+GET http://localhost:3000/forum/threads HTTP/1.1
+content-type: application/json
+
+{        
+}
+
+
+###
+
+GET http://localhost:3000/user/:627ba1ef5b9650f424f892f2 HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
+
+{        
+}
+
+###
+//LOGIN
+POST http://localhost:3000/user/Login HTTP/1.1
+content-type: application/json
+
+{
+    "userName":"Allyn",
+    "password":"zaq1@WSX"      
+}
+###
+//REGISTER
+POST http://localhost:3000/user/Register HTTP/1.1
+content-type: application/json
+
+{
+    "userName":"Allyn",
+    "name": "Alan",
+    "email":"Allyn@gmail.com",
+    "admin":false,
+    "surname": "Strawpool",
+    "password": "zaq1@WSX"
+}
+
+###
+
+PUT http://localhost:3000/forum/thread/62750a258435e24c9e540d50 HTTP/1.1
+content-type: application/json
+
+{
+     
+}
+
+###
+
+DELETE http://localhost:3000/forum/thread/62751a2caf693efba92afdde HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
+
+{            
+}

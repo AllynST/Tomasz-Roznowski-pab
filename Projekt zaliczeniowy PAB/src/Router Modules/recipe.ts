@@ -11,22 +11,24 @@ const express = require("express");
 const router = express.Router();
 
 router.use((req: Request, res: Response, next: any) => {    
-    //dbConnector.authorizeCheck(req.headers.authorization!,res,next)
-    next()
+    dbConnector.authorizeCheck(req.headers.authorization!,res,next)    
 });
 
+
+router.get("/all", (req: Request, res: Response) => {
+    dbConnector.recipeCRUD.GET_ALL(res);
+});
 router.get("/:id", (req: Request, res: Response) => {
-    dbConnector.recipeCRUD.GET(+req.params.id, res);
+    dbConnector.recipeCRUD.GET(req.params.id, res);
 });
 router.post("/", (req: Request, res: Response) => {
     dbConnector.recipeCRUD.POST(req.body, res);
 });
 router.put("/:id", (req: Request, res: Response) => {
-    dbConnector.recipeCRUD.PUT(+req.params.id, req.body, res);
+    dbConnector.recipeCRUD.PUT(req.params.id, req.body, res);
 });
 router.delete("/:id", (req: Request, res: Response) => {
-    dbConnector.recipeCRUD.DELETE(+req.params.id, res);
+    dbConnector.recipeCRUD.DELETE(req.params.id, res);
 });
-//TODO ADD ENDPOINT TO RETURN ALL RECIPES !!!!!!!!!!!
 
 export default module.exports = router;

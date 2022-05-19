@@ -1,27 +1,24 @@
 import mongoose from "mongoose";
-import {Response} from 'express'
-import { Recipe} from "./classes";
+import { Response } from "express";
+import { Recipe } from "./classes";
 import jwt from "jsonwebtoken";
 import recipeCRUD from "./recipeCRUD";
 import reviewCRUD from "./reviewCRUD";
 import { recipeModel } from "./schemas";
 import userCRUD from "./userCRUD";
-import { secret } from "..";
 import forumThreadCRUD from "./forumThreadCRUD";
 import forumPostCRUD from "./forumPostCRUD";
 import { AdminPanel } from "./adminPanel";
+import "dotenv/config";
 
-class dbConnector {
-
-    recipeCRUD:recipeCRUD;
-    reviewCRUD:reviewCRUD;
-    userCRUD:userCRUD;
-    forumThreadCRUD:forumThreadCRUD;
-    forumPostCRUD:forumPostCRUD;
-    AdminPanel:AdminPanel;
+class dbConnector{
+    recipeCRUD: recipeCRUD;
+    reviewCRUD: reviewCRUD;
+    userCRUD: userCRUD;
+    forumThreadCRUD: forumThreadCRUD;
+    forumPostCRUD: forumPostCRUD;
+    AdminPanel: AdminPanel;
     //categorieCRUD:categorieCRUD;
-
-    //TODO: connect other endpoints
 
     constructor() {
         this.dbConnect();
@@ -32,57 +29,46 @@ class dbConnector {
         this.forumThreadCRUD = new forumThreadCRUD();
         this.forumPostCRUD = new forumPostCRUD();
         this.AdminPanel = new AdminPanel();
-        //this.findObjByID(2,"recipe")
     }
 
-    async authorizeCheck(header:string, res:Response,next?:any){
+    authorizeCheck(header: string, res: Response, next?: any) {
         //401 no token
         //403 invalid token or data format
 
-        
-       
-        if(header == undefined) {return res.sendStatus(401)}
-            if(!header.includes("Bearer ")){return res.sendStatus(401)}
-            const token: string | undefined = header.split(' ')[1];
+        if (header == undefined) {
+            return res.status(401).send("No token found");
+        }
+        if (!header.includes("Bearer ")) {
+            return res.status(401).send("Your token need to be in Bearer schema('Bearer yourToken')");
+        }
+        const token: string | undefined = header.split(" ")[1];
 
-            jwt.verify(token!, secret, (err, user: any) => {
-                //TODO CHANGE DO ENV
-                if (err) return res.sendStatus(403);
+        jwt.verify(token!, process.env.secret!, (err, user: any) => {
+            if (err) return res.status(403).send("Your token is incorrect or expired");
 
-                res.locals.user = user;
+            res.locals.user = user;
 
-            //     //Wrong data format
-            //    else if (!(user instanceof User)) {
-            //         return res.sendStatus(403);
-            //     }
-                
-                if(next != undefined){
-                    next();
-                }
-                
-            });   
-        
-      
-        
+            if (next != undefined) {
+                next();
+            }
+        });
     }
 
     async dbConnect() {
         try {
-            const db = await mongoose.connect(
-                "mongodb+srv://Allyn:zaq1%40WSX@recipewebsitepab.sh30a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-            );
+            const db = await mongoose.connect(process.env.dbConString!);
         } catch (err) {
             throw new Error("database connection failed");
         } finally {
-            console.log("Database connection succesfull");
+            console.log("Database connected");
         }
     }
 
     async findObjByID(id: number, type: string): Promise<Recipe> {
         console.log("find is working");
-        const before= await recipeModel.findOne({id:id});
+        const before = await recipeModel.findOne({ id: id });
 
-        console.log(before)
+        console.log(before);
         return before;
     }
 }

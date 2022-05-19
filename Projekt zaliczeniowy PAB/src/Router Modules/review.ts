@@ -8,8 +8,7 @@ const router = express.Router()
 
 // middleware that is specific to this router
 router.use((req: Request, res: Response,next:any) => {  
-  //const token = req.headers.authorization
-  next();
+  dbConnector.authorizeCheck(req.headers.authorization!,res,next)
   
 })
 
@@ -30,8 +29,8 @@ router.put("/:id", (req: Request, res: Response) => {
   res.sendStatus(404);
 });
 router.delete("/:recipeID/:reviewID", (req: Request, res: Response) => {
-  dbConnector.reviewCRUD.DELETE(+req.params.recipeID,+req.params.reviewID,res);
-   //splice konkretnego obiektu i update
+  dbConnector.reviewCRUD.DELETE(req.params.recipeID,req.params.reviewID,res);
+   
 });
 
 

@@ -1,26 +1,28 @@
 import { IReview } from "../helpers/dataFormats"
 
 export class Recipe{
-    id:number
+   
     name:string
-    category:string[]
+    categories:string[]
     ingredients:string[]
+    addedBy:User;
     steps:string[]
-    date:Date
+    
     reviews:IReview[]
 
     constructor(obj:Recipe){
-        this.id = obj.id;
+       
         this.name = obj.name;
-        this.category = obj.category;
+        this.categories = obj.categories;
+        this.addedBy = obj.addedBy;
         this.ingredients = obj.ingredients;
         this.steps = obj.steps;
-        this.date = obj.date;
-        this.reviews = obj.reviews;
+         this.reviews = obj.reviews;
     }
 }
 
 export class User{
+    userName:string;
     name: string
     email:string
     admin:boolean
@@ -28,6 +30,7 @@ export class User{
     password: string
 
     constructor(user:User){
+        this.userName = user.userName;
         this.name = user.name;
         this.email = user.email;
         this.admin = user.admin;

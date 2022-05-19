@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
     admin: Boolean,
     surname: String,
     password: String,
+},{
+    timestamps: true    
 });
 
 const postSchema = new mongoose.Schema({
@@ -20,8 +22,7 @@ const postSchema = new mongoose.Schema({
         required:true
     },
     addedBy: {
-        name: String,
-        surname: String,
+        userName: String,
         admin: Boolean,
     },
 }, { timestamps: true });
@@ -40,8 +41,7 @@ const threadSchema = new mongoose.Schema(
         posts: [postSchema],
         categories: [String],
         addedBy: {
-            name: String,
-            surname: String,
+            userName: String,
             admin: Boolean,
         },
         post_count: Number,
@@ -49,16 +49,17 @@ const threadSchema = new mongoose.Schema(
     { timestamps: true }
 );
 const recipeSchema = new mongoose.Schema({
-    //TODO delete id instead use _id from mongo
-    id: Number,
     name: String,
-    category: [String],
+    addedBy:{
+        userName: String,
+        admin: Boolean
+    },
+    categories: [String],
     ingredients: [String],
-    steps: [String],
-    date: Date,
-    reviews: [
+    steps: [String],    
+    reviews: [        
         {
-            user: String,
+            userName: String,
             rating: Number,
             likes: Number,
             dislikes: Number,
@@ -66,10 +67,10 @@ const recipeSchema = new mongoose.Schema({
             date: Date,
         },
     ],
+},{
+    timestamps:true
 });
 
-//TODO Blog thread schema
-//TODO blog post schemas
 export const threadModel = mongoose.model("forumThreads", threadSchema);
 export const userModel = mongoose.model("users", userSchema);
 export const recipeModel = mongoose.model("recipes", recipeSchema);

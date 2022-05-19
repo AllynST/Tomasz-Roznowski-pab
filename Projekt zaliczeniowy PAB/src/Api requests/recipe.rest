@@ -1,0 +1,64 @@
+GET http://localhost:3000/recipe/627bc41d3078cec38c6bcb42 HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
+
+{
+   
+}
+###
+GET http://localhost:3000/recipe/all HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+###
+//TODO finish requests
+
+POST http://localhost:3000/recipe HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
+{
+  "name": "Kotlet",
+  "category": [
+    "Kuchnia Polska"
+  ],  
+  "ingredients": [
+    "kotlet",
+    "panierka"
+  ],
+  "steps": [
+    "Stłucz kotleta",
+    "Obtocz w panierce",
+    "Usmaż"
+  ],
+  "date": null   
+}
+
+###
+PUT http://localhost:3000/recipe/627bc41d3078cec38c6bcb42 HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
+
+{
+  "name": "Spaghetti",
+  "category": [
+    "Kuchnia Polska"
+  ],  
+  "ingredients": [
+    "kotlet",
+    "panierka"
+  ],
+  "steps": [
+    "eowigjwoeijgwoiejgowiejgowiejgowiejgowgiejg",
+    "Obtocz w panierce",
+    "Usmaż"
+  ] 
+
+}
+###
+DELETE http://localhost:3000/recipe/627bc41d3078cec38c6bcb42 HTTP/1.1
+content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
