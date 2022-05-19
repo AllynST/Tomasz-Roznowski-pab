@@ -19,23 +19,19 @@ export default class reviewCRUD {
             userName : res.locals.user.userName,
             admin : res.locals.user.admin
         }        
-        
-        obj.date = new Date().toLocaleString();
+      
         console.log(obj);
         const before: Recipe | null = await recipeModel.findOne({ id: id });
         console.log(before);
-        if (before?.reviews == null) {
-            before!.reviews == obj;
-            recipeModel.findByIdAndUpdate({ id: id }, before!);
-            //TODO: zmienić destrukturyzacje na $push
-        } else {
-            before.reviews = [...before.reviews, obj];
+      
             recipeModel.findOneAndUpdate({ id: id },
-                 {before},
+                 {$push:{
+                     reviews:before
+                 }},
                  (err:Error,val:any)=>{
                console.log(err)
             });
-        }
+        
 
 
 
