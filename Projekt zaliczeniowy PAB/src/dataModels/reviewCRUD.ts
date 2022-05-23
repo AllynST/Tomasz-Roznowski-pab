@@ -1,5 +1,5 @@
 import { Recipe } from "./classes";
-import { Request, Response } from "express";
+import {Response } from "express";
 import { recipeModel } from "./schemas";
 import { validateUser } from "../helpers/helperFunctions";
 
@@ -15,29 +15,25 @@ export default class reviewCRUD {
     }
 
     async POST(id: number, obj: any, res: Response) {
-        obj.addedBy = {
-            userName : res.locals.user.userName,
-            admin : res.locals.user.admin
-        }        
-      
-        console.log(obj);
-        const before: Recipe | null = await recipeModel.findOne({ id: id });
-        console.log(before);
-      
-            recipeModel.findOneAndUpdate({ id: id },
-                 {$push:{
-                     reviews:before
-                 }},
-                 (err:Error,val:any)=>{
-               console.log(err)
-            });
         
-
-
-
-        res.send(before);
-        //TODO: probably not working
+        if(obj.content == null) return res.status(412).send("Review message not provided")
+        //TODO add check if recipe is not found
+        const signedContent = {
+            userName : res.locals.user.userName,
+            content:obj.content,
+        }       
+              
+            recipeModel.findOneAndUpdate({ id: id },
+                 {$push:{ reviews:signedContent }},
+                 (err:Error,val:any)=>{
+                if(err) res.status(404).send("Thread not found or review message not provided");
+                else{
+                    res.status(200).send("Review added successfully")
+                }
+            });     
     }
+    //TODO add like endpoint find with both ids in one*
+    //TODO add dislike endpoint
 
     async DELETE(recipeID: string, reviewID: string, res: Response) {
     

@@ -38,38 +38,49 @@ const threadSchema = new mongoose.Schema(
             required:true
 
         },
-        posts: [postSchema],
+        posts:{ 
+            type : [postSchema],
+            default: []
+        },
         categories: [String],
+        post_count:{
+            type:Number,
+            default:0
+        },
+    },
+    { timestamps: true }
+);
+const recipeSchema = new mongoose.Schema(
+    {
+        name: String,
         addedBy: {
             userName: String,
             admin: Boolean,
         },
-        post_count: Number,
+        categories: [String],
+        ingredients: [String],
+        steps: [String],
+        reviews: [
+            {
+                userName: String,
+                rating:{type:Number,default:0},
+                likes: { type: Number, default: 0 },
+                dislikes: { type: Number, default: 0 },
+                content:{
+                    type:String,
+                    required: true,
+                },
+                date: {
+                    type: Date,
+                    default: Date.now,
+                },
+            },
+        ],
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+    }
 );
-const recipeSchema = new mongoose.Schema({
-    name: String,
-    addedBy:{
-        userName: String,
-        admin: Boolean
-    },
-    categories: [String],
-    ingredients: [String],
-    steps: [String],    
-    reviews: [        
-        {
-            userName: String,
-            rating: Number,
-            likes: Number,
-            dislikes: Number,
-            content: String,
-            date: Date,
-        },
-    ],
-},{
-    timestamps:true
-});
 
 export const threadModel = mongoose.model("forumThreads", threadSchema);
 export const userModel = mongoose.model("users", userSchema);

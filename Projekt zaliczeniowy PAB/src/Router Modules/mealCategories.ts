@@ -7,8 +7,8 @@ const router = express.Router()
 
 // middleware that is specific to this router
 router.use((req: Request, res: Response,next:any) => {  
-  const token = req.headers.authorization
-  
+  throw new Error("Not implemented endpoint")
+  //TODO MAKE CATEGORIES CRUD
 })
 
 

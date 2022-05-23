@@ -22,14 +22,7 @@ content-type: application/json
 {
         "topic":"Forum rules",
         "description":"Following post contains a list of rules enforced by the administration",
-        "posts":[],
-        "categories":["Admin","Rules"],
-        "addedBy": {
-            "name":"Allyn",
-            "surname":"Strawpool",
-            "admin":true
-        },
-        "post_count": 1
+        "categories":["Admin","Rules"]
 }
 
 
