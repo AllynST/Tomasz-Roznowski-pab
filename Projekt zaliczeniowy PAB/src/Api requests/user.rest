@@ -21,7 +21,7 @@ POST http://localhost:3000/user/Login HTTP/1.1
 content-type: application/json
 
 {
-    "userName":"Allyn",
+    "userName":"Skorcz",
     "password":"zaq1@WSX"      
 }
 ###
@@ -31,11 +31,10 @@ content-type: application/json
 
 {
     "userName":"Allyn",
-    "name": "Alan",
+    "name": "Tomasz",
     "email":"Allyn@gmail.com",
-    "admin":false,
-    "surname": "Strawpool",
-    "password": "zaq1@WSX"
+    "surname": "Rożnowski",
+    "password": "passwordTest"
 }
 
 ###

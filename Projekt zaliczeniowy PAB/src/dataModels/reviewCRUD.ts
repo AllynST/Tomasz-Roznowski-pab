@@ -32,11 +32,12 @@ export default class reviewCRUD {
                 }
             });     
     }
-    //TODO add like endpoint find with both ids in one*
-    //TODO add dislike endpoint
+    //TODO add like endpoint, find with both ids in one*
+    //TODO add dislike,like endpoint
 
     async DELETE(recipeID: string, reviewID: string, res: Response) {
     
+        //TODO change to find with both IDs
         const threadExists = await recipeModel.findById(recipeID);
 
         const index = threadExists.reviews.findIndex(
@@ -61,8 +62,8 @@ export default class reviewCRUD {
                     (err: Error, val: any) => {
                         if (err) {
                             return res
-                                .status(404)
-                                .send("Internal server error");
+                                .status(400)
+                                .send("Something went wrong with your request");
                         } else {
                             const index = val.reviews.findIndex(
                                 (r: any) => r.reviewId === reviewID

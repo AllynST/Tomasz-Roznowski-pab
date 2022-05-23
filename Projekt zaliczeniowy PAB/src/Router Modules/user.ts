@@ -25,6 +25,11 @@ router.post("/Login", (req: Request, res: Response) => {
 router.post("/Register", (req: Request, res: Response) => {
   dbConnector.userCRUD.POST_register(req.body,res)  
 });
+
+router.post("/Logout/:id",(req: Request, res: Response) => {
+  res.locals.token = req.headers.authorization!;
+  dbConnector.userCRUD.LogOut(req.params.id,res)  
+});
 router.put("/:id", (req: Request, res: Response) => {
     //const payload = jwt.verify(token, secret)
     //zmiana danych użytkownika po potwierdzeniu hasła

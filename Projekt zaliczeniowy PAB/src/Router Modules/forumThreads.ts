@@ -11,10 +11,8 @@ const express = require("express");
 const router = express.Router();
 
 
-router.use((req: Request, res: Response, next: any) => {    
-    //TODO reenable authorization
-    // dbConnector.authorizeCheck(req.headers.authorization!,res,next)
-    next()
+router.use((req: Request, res: Response, next: any) => {
+    dbConnector.authorizeCheck(req.headers.authorization!,res,next)    
 });
 
 
@@ -29,6 +27,12 @@ router.post("/", (req: Request, res: Response) => {
 });
 router.put("/:id", (req: Request, res: Response) => {
     dbConnector.forumThreadCRUD.PUT(req.params.id,req.body,res)
+});
+router.put("/archive/:id", (req: Request, res: Response) => {
+    dbConnector.forumThreadCRUD.Archive(req.params.id,res);
+});
+router.put("/restore/:id", (req: Request, res: Response) => {
+    dbConnector.forumThreadCRUD.Restore(req.params.id,res);
 });
 router.delete("/:id", (req: Request, res: Response) => {
     dbConnector.forumThreadCRUD.DELETE(req.params.id,res)

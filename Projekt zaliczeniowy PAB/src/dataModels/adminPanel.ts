@@ -3,7 +3,7 @@ import {Response} from "express"
 
 export class AdminPanel{
     
-    async giveAdmin(id:number,res:Response){
+    async giveAdmin(id:string,res:Response){
        let result =  await userModel.findByIdAndUpdate(id,{admin:true});
 
         if(result.modifiedCount === 1){

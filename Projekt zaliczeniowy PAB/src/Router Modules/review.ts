@@ -13,8 +13,7 @@ router.use((req: Request, res: Response,next:any) => {
 })
 
 
-router.get("/:id", (req: Request, res: Response) => {
-  //TODO: zwracanie wszystkich opini dla przepisu o podanym id
+router.get("/:id", (req: Request, res: Response) => {  
   dbConnector.reviewCRUD.GET(+req.params.id,res);
 });
 
@@ -26,7 +25,7 @@ router.post("/:id",(req: Request, res: Response)=>{
 router.put("/:id", (req: Request, res: Response) => {
   //You cannot change the content of posted review
   // Changing the content of a review may lead to giving false information(likes and dislikes)
-  res.sendStatus(404);
+  return res.sendStatus(404);
 });
 router.delete("/:recipeID/:reviewID", (req: Request, res: Response) => {
   dbConnector.reviewCRUD.DELETE(req.params.recipeID,req.params.reviewID,res);

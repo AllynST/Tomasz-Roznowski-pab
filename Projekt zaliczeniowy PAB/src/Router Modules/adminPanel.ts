@@ -29,9 +29,11 @@ router.use((req: Request, res: Response, next: any) => {
         next();
     });
 
-    router.put("/:id", (req: Request, res: Response) => {
-        dbConnector.AdminPanel.giveAdmin(+req.params.id, res);
-    });
+    
+});
+
+router.put("/:id", (req: Request, res: Response) => {
+    dbConnector.AdminPanel.giveAdmin(req.params.id, res);
 });
 
 export default module.exports = router;

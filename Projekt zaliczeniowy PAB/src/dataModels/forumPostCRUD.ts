@@ -1,14 +1,21 @@
 import { Response } from "express";
+import { validateUser } from "../helpers/helperFunctions";
 import { threadModel } from "./schemas";
 
 export default class forumPostCRUD {
-    //FIXME fix this entire section
+    
 
     async POST(threadID: string, obj: any, res: Response) {
-        //TODO ADD ID CHECK
+        
+        obj.addedBy = {
+            userName: res.locals.user.userName,
+            admin: res.locals.user.admin
+        }  
 
         const result = await threadModel.findById(threadID);
+        if(result == undefined) return res.status(404).send("No thread found with provided ID")
         result.posts = [...result.posts, obj];
+        
         let error: Error;
         result
             .save()
@@ -53,7 +60,8 @@ export default class forumPostCRUD {
                     .status(404)
                     .send("Post with provided data doesnt exist");
             let error: Error;
-            result.posts.pull(postID);
+            if(validateUser(result,res.locals)){
+                result.posts.pull(postID);
             result
                 .save()
                 .catch((err: Error) => {
@@ -63,6 +71,11 @@ export default class forumPostCRUD {
                 .then(() => {
                     if (!error) res.status(200).send("object deleted");
                 });
+            }
+            else{
+                return res.status(401).send("You dont have permission to delete this object");
+            }
+            
         } catch (err) {
             return res
                 .status(412)
