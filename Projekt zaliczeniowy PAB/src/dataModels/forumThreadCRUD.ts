@@ -1,6 +1,6 @@
 import { Response } from "express";
 import mongoose from "mongoose";
-import { archiveModel, threadModel } from "./schemas";
+import {threadModel } from "./schemas";
 import {validateUser} from "../helpers/helperFunctions"
 
 export default class forumThreadCRUD {
@@ -55,7 +55,7 @@ export default class forumThreadCRUD {
             return res.status(403).send("You dont have permmision to modify this thread")
         }
     }
-    async DELETE(id: string, res: Response) {
+    async DELETE(id: string, res: Response){
         console.log(res.locals.user)
         const test:any = await threadModel.findById(id)
         if(test == undefined) return res.status(404).send("thread not found")
@@ -75,15 +75,26 @@ export default class forumThreadCRUD {
         
     }
     async Archive(ThreadID:string,res:Response){
-        const thread = await threadModel.findById(ThreadID);
-        await threadModel.deleteOne({id:ThreadID})
-        await new archiveModel(thread).save();
-        return res.status(200).send("Thread archived")
+        console.log(ThreadID)
+
+        let thread = await threadModel.findById(ThreadID);
+        if(thread == undefined) return res.status(404).send("Thread not found")
+        thread.archived = true;
+        thread.save().then(()=>{
+            return res.status(200).send("Thread archived");
+        });    
+     
     }
+
+
     async Restore(ThreadID:string,res:Response){
-        const thread = await archiveModel.findById(ThreadID);
-        await archiveModel.deleteOne({id:ThreadID})
-        await new threadModel(thread).save();
-        return res.status(200).send("Thread restored")
+        console.log(ThreadID)
+
+        let thread = await threadModel.findById(ThreadID);
+        if(thread == undefined) return res.status(404).send("Thread not found");
+        thread.archived = false;
+        thread.save().then(()=>{
+            return res.status(200).send("Thread restored");
+        });    
     }
 }

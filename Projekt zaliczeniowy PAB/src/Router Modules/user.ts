@@ -8,7 +8,7 @@ const router = express.Router();
 router.use((req: Request, res: Response, next: any) => {
     next();
 });
-
+//TODO add token expiration date
 //prywatne  dane o koncie
 router.get("/:id", (req: Request, res: Response) => {
   dbConnector.authorizeCheck(req.headers.authorization!,res)
@@ -35,6 +35,8 @@ router.put("/:id", (req: Request, res: Response) => {
     //zmiana danych użytkownika po potwierdzeniu hasła
 });
 //usuwanie konta po potwierdzeniu hasła
-router.delete("/:id", (req: Request, res: Response) => {});
+router.delete("/:id", (req: Request, res: Response) => {
+  dbConnector.authorizeCheck(req.headers.authorization!, res);
+});
 
 export default module.exports = router;

@@ -49,6 +49,10 @@ const threadSchema = new mongoose.Schema(
             type : [postSchema],
             default: []
         },
+        archived:{
+            default:false,
+            type:Boolean
+        },
         categories: [String],
         post_count:{
             type:Number,
@@ -89,7 +93,7 @@ const recipeSchema = new mongoose.Schema(
     }
 );
 
-export const archiveModel = mongoose.model("archive",threadSchema);
+
 export const threadModel = mongoose.model("forumThreads", threadSchema);
 export const userModel = mongoose.model("users", userSchema);
 export const recipeModel = mongoose.model("recipes", recipeSchema);
