@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { validateUser } from "../helpers/helperFunctions";
+import { postValidator } from "../helpers/JoiValidators";
 import { threadModel } from "./schemas";
 
 export default class forumPostCRUD {
@@ -7,6 +8,10 @@ export default class forumPostCRUD {
 
     async POST(threadID: string, obj: any, res: Response) {
         
+        const postValidation= postValidator(obj).error ;
+
+        if(postValidation) return res.status(400).send(postValidation.details[0].message);
+
         obj.addedBy = {
             userName: res.locals.user.userName,
             admin: res.locals.user.admin
@@ -31,6 +36,11 @@ export default class forumPostCRUD {
             });
     }
     async PUT(threadID: number, postID: Number, obj: any, res: Response) {
+        
+        const postValidation = postValidator(obj).error;
+
+        if (postValidation) return res.status(400).send(postValidation.details[0].message);
+        
         const result = await threadModel.findOne({ _id: threadID });
         if (result.acknowledged) {
             const index = result.posts.findIndex(

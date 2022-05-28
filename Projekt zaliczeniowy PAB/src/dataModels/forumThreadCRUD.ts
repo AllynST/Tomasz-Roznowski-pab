@@ -2,6 +2,8 @@ import { Response } from "express";
 import mongoose from "mongoose";
 import {threadModel } from "./schemas";
 import {validateUser} from "../helpers/helperFunctions"
+import { threadValidator } from "../helpers/JoiValidators";
+import { JOI_ID_Checker } from "../helpers/JoiSchemas";
 
 export default class forumThreadCRUD {
     async GET_ALL(res: Response) {
@@ -18,6 +20,10 @@ export default class forumThreadCRUD {
     }
     async POST(obj: any, res: Response) {
         //TODO check if obj is valid
+
+        const validated = threadValidator(obj).error;
+
+        if(validated) return res.status(400).send(validated.details[0].message)
        
         obj.addedBy = {
             userName: res.locals.user.userName,
@@ -39,6 +45,10 @@ export default class forumThreadCRUD {
             });
     }
     async PUT(id: string, obj: any, res: Response) {
+
+         const validated = threadValidator(obj).error;
+         if(validated) return res.status(400).send(validated.details[0].message)
+
         const check :any = threadModel.findById(id);
         if(check == null){
             return res.status(404).send("Thread with  that id doesnt exist")
@@ -56,7 +66,9 @@ export default class forumThreadCRUD {
         }
     }
     async DELETE(id: string, res: Response){
-        console.log(res.locals.user)
+
+
+        
         const test:any = await threadModel.findById(id)
         if(test == undefined) return res.status(404).send("thread not found")
         if(validateUser(test, res.locals)){

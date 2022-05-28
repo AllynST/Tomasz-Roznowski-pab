@@ -1,7 +1,8 @@
-import { validateUser, validJSON } from "../helpers/helperFunctions";
+import { validateUser } from "../helpers/helperFunctions";
 import { Recipe } from "./classes";
 import { Response } from "express";
 import { recipeModel } from "./schemas";
+import { recipeValidator } from "../helpers/JoiValidators";
 
 export default class recipeCRUD {
 
@@ -17,7 +18,10 @@ export default class recipeCRUD {
     }
 
     async POST(obj: any, res: Response) {
-        if (validJSON(obj)) {
+        
+            const {error} = recipeValidator(obj);
+            if(error) return res.status(400).send(error.details[0].message);
+
             try {
                 obj.addedBy = res.locals.user;
                 const classObj = new Recipe(obj);
@@ -28,12 +32,16 @@ export default class recipeCRUD {
             } catch (err) {
                 res.status(400).send("Something went wrong");
             }
-        } else res.status(400).send("not a valid JSON");
+        
     }
     async PUT(id: string, obj: any, res: Response) {
-        const before: Recipe | null = await recipeModel.findOne({ id: id });
-        console.log(before);
 
+        const { error } = recipeValidator(obj);
+        if (error) return res.status(400).send(error.details[0].message);
+
+
+        const before: Recipe | null = await recipeModel.findOne({ id: id });
+        
         if (before == null) return res.status(404).send("Object not found");
         if (validateUser(before, res.locals)) {
             await recipeModel.findByIdAndUpdate(before, obj);

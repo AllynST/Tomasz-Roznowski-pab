@@ -33,6 +33,10 @@ const threadSchema = new mongoose.Schema(
             type:String,
             required:true
         },
+        pinned:{
+            type:Boolean,
+            default:false
+        },
         addedBy:{
             type:{
                 userName:String,

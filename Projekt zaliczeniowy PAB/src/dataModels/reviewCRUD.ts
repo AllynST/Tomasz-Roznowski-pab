@@ -2,6 +2,7 @@ import { Recipe } from "./classes";
 import {Response } from "express";
 import { recipeModel } from "./schemas";
 import { validateUser } from "../helpers/helperFunctions";
+import { reviewValidator } from "../helpers/JoiValidators";
 
 export default class reviewCRUD {
     async GET(id: number, res: Response) {
@@ -15,9 +16,9 @@ export default class reviewCRUD {
     }
 
     async POST(id: number, obj: any, res: Response) {
-        
-        if(obj.content == null) return res.status(412).send("Review message not provided")
-        //TODO add check if recipe is not found
+        const {error} = reviewValidator(obj);
+         if (error) return res.status(400).send(error.details[0].message);
+       
         const signedContent = {
             userName : res.locals.user.userName,
             content:obj.content,

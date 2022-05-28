@@ -34,13 +34,15 @@ content-type: application/json
     "name": "Tomasz",
     "email":"Allyn@gmail.com",
     "surname": "Rożnowski",
-    "password": "passwordTest"
+    "password": "passwordTest",
+    "confirmPassword": "passwordTest"
 }
 
 ###
 
 PUT http://localhost:3000/forum/thread/62750a258435e24c9e540d50 HTTP/1.1
 content-type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IkFsbHluIiwibmFtZSI6IkFsYW4iLCJlbWFpbCI6IkFsbHluQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwic3VybmFtZSI6IlN0cmF3cG9vbCIsInBhc3N3b3JkIjoiemFxMUBXU1giLCJpYXQiOjE2NTIyNjk1NTF9.d9lPX6MZ3iuMBH4arhQkVoXO2hixlct-7jb9cGB0lm0
 
 {
      

@@ -1,9 +1,11 @@
-import { validateUser, validJSON } from "../helpers/helperFunctions";
+import { validateUser} from "../helpers/helperFunctions";
 import jwt from "jsonwebtoken";
 import { Response } from "express";
 import { userModel } from "./schemas";
 import { User } from "./classes";
 import "dotenv/config";
+import { IdValidator, userValidator } from "../helpers/JoiValidators"
+
 var CryptoJS = require("crypto-js");
 
 export default class userCRUD {
@@ -47,24 +49,29 @@ export default class userCRUD {
         
     }
     async POST_register(obj: User, res: Response) {
+
+        const {error} = userValidator(obj)
+        if(error) return res.status(400).send(error.details[0].message)
+
         //FIXME rewrite register
         obj.password = CryptoJS.AES.encrypt(obj.password, process.env.secret).toString()
-        obj.admin = false;
-        //TODO Email username validation etc...
-        const user = new User(obj);
+        obj.admin = false;       
         
         
-        if (validJSON(user) && user instanceof User) {
             const token: string = jwt.sign(obj, process.env.secret!);
-            const model = await new userModel(user);
+            const model = await new userModel(obj);
             await model.save();
             res.send("Bearer " + token);
-            //TODO add constraints to prevent adding accounts with invalid email etc.
-        } else {
-            res.sendStatus(400);
-        }
+           
+       
     }
-    async PUT(id: number, obj: any, res: Response) {
+    async PUT(id: string, obj: any, res: Response) {
+        const Iderror = IdValidator(id).error
+        if(Iderror) return res.status(400).send(Iderror.details[0].message);
+
+        const {error} = userValidator(obj)
+        if(error) return res.status(400).send(error.details[0].message)
+
         const user = await userModel.findById(id)
         if(user == null) return res.status(404).send("User not found");
         if(validateUser(user, res.locals)){
@@ -86,14 +93,12 @@ export default class userCRUD {
         const user = await userModel.findById(id)
         if(res.locals.token == null) return res.status(412).send("No token provided")
         if(validateUser(user ,res.locals)){
-            //TODO how to destroy token????
+            //TODO delete hash from db
         }
         else{
             return res.status(403).send("You dont have permission to log out this user")
         }
-
     }
-
 
     async DELETE(id: number, res: Response) {
          const user = await userModel.findById(id);
@@ -112,3 +117,4 @@ export default class userCRUD {
          }
     }
 }
+

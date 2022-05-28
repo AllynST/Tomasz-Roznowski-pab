@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+var cron = require("node-cron");
 
 const app = express();
 
@@ -9,6 +10,7 @@ import userAPI from "./Router Modules/user";
 import threadAPI from "./Router Modules/forumThreads";
 import postAPI from "./Router Modules/forumPosts";
 import adminAPI from "./Router Modules/adminPanel";
+import { archiveRoutine } from "./helpers/helperFunctions";
 
 if (process.env.secret == undefined) {
     throw new Error("No secret found");
@@ -18,27 +20,13 @@ if (process.env.dbConString == undefined) {
     throw new Error("No database connection string found");
 }
 
-//TODO make forum threads and posts work with websocket
-
-
-//TODO delete websocket template
-//WEB SOCKET
-// const server = http.createServer(app);
-// const wsServer = new ws.Server({ server: server });
-
-// wsServer.on("connection", (socket: ws) => {
-//     console.log("new connection");
-//     socket.on("message", (msg) => {
-//         console.log(`New message:${msg}`);
-//         wsServer.clients.forEach((client: ws) => {
-//             client.send(`new message${msg}`);
-//         });
-//     });
-//     //socket.send('hello you')
-// });
-
-
-// server.listen(3001);
+//Running maintanance 
+//Every day at 2:30 look for threads with last post older then 7 days and archive the thread
+cron.schedule("30 2 * * *", async () => {
+  await archiveRoutine();
+  console.log("Thread maintanance finished")
+  console.log("Old threads archived")
+});
 
 app.use(express.json());
 

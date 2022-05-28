@@ -29,8 +29,11 @@ router.use((req: Request, res: Response, next: any) => {
         next();
     });
 
-    router.put("/:id", (req: Request, res: Response) => {
+    router.put("/grant/:id", (req: Request, res: Response) => {
         dbConnector.AdminPanel.giveAdmin(req.params.id, res);
+    });
+    router.put("/pinThread/:id", (req: Request, res: Response) => {
+        dbConnector.AdminPanel.adminPinThread(req.params.id, res);
     });
 });
 
