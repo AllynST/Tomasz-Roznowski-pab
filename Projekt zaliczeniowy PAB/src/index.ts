@@ -23,9 +23,9 @@ if (process.env.dbConString == undefined) {
 //Running maintanance 
 //Every day at 2:30 look for threads with last post older then 7 days and archive the thread
 cron.schedule("30 2 * * *", async () => {
-  await archiveRoutine();
+  const num = await archiveRoutine();
   console.log("Thread maintanance finished")
-  console.log("Old threads archived")
+  console.log(`${num} threads archived`)
 });
 
 app.use(express.json());

@@ -1,6 +1,6 @@
 import { Recipe } from "./classes";
 import {Response } from "express";
-import { recipeModel } from "./schemas";
+import { recipeModel, threadModel } from "./schemas";
 import { validateUser } from "../helpers/helperFunctions";
 import { reviewValidator } from "../helpers/JoiValidators";
 
@@ -32,6 +32,74 @@ export default class reviewCRUD {
                     res.status(200).send("Review added successfully")
                 }
             });     
+    }
+
+    async Like(recipeID:string,reviewID:string,res:Response){
+            const userName = res.locals.user.userName
+
+            const targetRecipe = await recipeModel.findOne({
+                _id:recipeID                    
+            })
+            // console.log(targetRecipe)
+            // console.log("--------------------")            
+            // console.log(targetRecipe.reviews.id)
+            const targetReview = targetRecipe.reviews.find((item:any)=>item.id === reviewID)
+
+            console.log(targetReview)
+
+            if(targetReview == undefined) return res.status(404).send("Review not found")
+
+
+            if(targetReview.likes.includes(userName)){
+                const index = targetReview.likes.indexOf(userName)
+                targetReview.likes.splice(index,1)
+                targetRecipe.save();                
+                return res.status(200).send("Like removed")
+            }
+            else{
+                targetReview.likes.push(userName)
+            } 
+            
+            
+
+            targetRecipe.save();
+
+            return res.send("Like added");
+
+
+    }
+
+    async Dislike(recipeID:string,reviewID:string,res:Response){
+        const userName = res.locals.user.userName
+
+            const targetRecipe = await recipeModel.findOne({
+                _id:recipeID                    
+            })
+            // console.log(targetRecipe)
+            // console.log("--------------------")            
+            // console.log(targetRecipe.reviews.id)
+            const targetReview = targetRecipe.reviews.find((item:any)=>item.id === reviewID)
+
+            console.log(targetReview)
+
+            if(targetReview == undefined) return res.status(404).send("Review not found")
+
+
+            if(targetReview.dislikes.includes(userName)){
+                const index = targetReview.dislikes.indexOf(userName)
+                targetReview.dislikes.splice(index,1)
+                targetRecipe.save();                
+                return res.status(200).send("dislike removed")
+            }
+            else{
+                targetReview.dislikes.push(userName)
+            }           
+            
+
+            targetRecipe.save();
+
+            return res.send("dislike added");
+
     }
     //TODO add like endpoint, find with both ids in one*
     //TODO add dislike,like endpoint

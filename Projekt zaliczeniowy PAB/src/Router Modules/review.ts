@@ -22,11 +22,15 @@ router.post("/:id",(req: Request, res: Response)=>{
     dbConnector.reviewCRUD.POST(+req.params.id,req.body, res);
 
 });
-router.put("/:id", (req: Request, res: Response) => {
-  //You cannot change the content of posted review
-  // Changing the content of a review may lead to giving false information(likes and dislikes)
-  return res.sendStatus(404);
+
+router.put("/like/:recipeID/:reviewID", (req: Request, res: Response) => {
+  dbConnector.reviewCRUD.Like(req.params.recipeID,req.params.reviewID, res)
 });
+
+router.put("/dislike/:recipeID/:reviewID", (req: Request, res: Response) => {
+  dbConnector.reviewCRUD.Dislike(req.params.recipeID,req.params.reviewID, res)
+});
+
 router.delete("/:recipeID/:reviewID", (req: Request, res: Response) => {
   dbConnector.reviewCRUD.DELETE(req.params.recipeID,req.params.reviewID,res);
    

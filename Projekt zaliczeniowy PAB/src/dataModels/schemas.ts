@@ -79,8 +79,8 @@ const recipeSchema = new mongoose.Schema(
             {
                 userName: String,
                 rating:{type:Number,default:0},
-                likes: { type: Number, default: 0 },
-                dislikes: { type: Number, default: 0 },
+                likes: { type: [String]},
+                dislikes: { type: [String]},
                 content:{
                     type:String,
                     required: true,

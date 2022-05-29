@@ -13,7 +13,9 @@ export function validateUser(user: any, resLocal: any): boolean {
     }
 }
 
-export async function archiveRoutine() {   
+export async function archiveRoutine() {
+    let counter = 0;  
+
     const unarchived = await threadModel.find({
         $and: [
             {
@@ -21,13 +23,17 @@ export async function archiveRoutine() {
             },
             { archived: false },
         ],
-    });    
+    });
+       
     unarchived.forEach((item)=>{
         if (archiveEligibility(item.posts[item.posts.length-1].createdAt)) {
+            counter++
             item.archived = true;
             item.save();
         }
-    })  
+    })
+    
+    return counter;
 }
 
 function archiveEligibility(InputDate: Date): Boolean {
