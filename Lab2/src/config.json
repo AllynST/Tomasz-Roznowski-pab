@@ -1,6 +1,0 @@
-{      
-    "dataMethod":"database",
-    "conString":"mongodb://localhost:27017/"
-    
-
-}
